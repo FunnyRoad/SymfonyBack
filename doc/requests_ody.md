@@ -21,23 +21,25 @@ api-base-path:
 HTTP Request  
 Method: POST  
 Url: {api-base-path}/place  
+```json
 {  
 	"name":"Ma place", // Place name  
 	"description":"Custom description", //Place description  
-	"grade":9, //Place grade <return>
+	"grade":9, //Place grade  
 }  
-
+```
 ## Update place
 HTTP Request  
 Method: PUT  
 Url: {api-base-path}/place  
+```json
 {  
 	"id",2,  // Place id  
 	"name":"Ma place", // Place name  
 	"description":"Custom description", //Place description  
 	"grade":9, //Place grade  
 }  
-
+```
 ## Find all places
 
 HTTP Request  
