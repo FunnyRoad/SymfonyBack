@@ -1,4 +1,4 @@
-#################### API Documentation ########################
+#API Documentation 
 The following API will permise you to manage roadsTrips using FunnyRoad application.
 
 ##Api summary:
@@ -15,7 +15,7 @@ api-base-path:
 	prod : ????
 
 ###################################################################################
-				# Place 
+# Place 
 
 ## Create Place
 HTTP Request
