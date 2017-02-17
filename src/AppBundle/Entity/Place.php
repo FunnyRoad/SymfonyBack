@@ -15,7 +15,7 @@ class Place implements \JsonSerializable {
      */
     private $id;
     /**
-     * @ORM\Column(type="string", length=40)
+     * @ORM\Column(type="string", length=40,nullable=false)
      */
     private $name;
     /**
