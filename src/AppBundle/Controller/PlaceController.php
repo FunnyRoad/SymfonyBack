@@ -14,6 +14,11 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Place;
 
 
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+
 class PlaceController extends Controller{
 
 
@@ -26,9 +31,9 @@ class PlaceController extends Controller{
         //   echo "im in";
 
         $em = $this->getDoctrine()->getManager();
-        $place = $em->find('AppBundle:Place',$id);
+        $place = $em->getRepository('AppBundle:Place')->find($id);
         $em->flush();
-
+        dump($place->getRoadtrip());
         return $this->json($place->jsonSerialize());
 
     }
