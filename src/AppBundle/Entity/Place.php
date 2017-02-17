@@ -1,62 +1,46 @@
 <?php
-
 // src/AppBundle/Entity/Place.php
 namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
-
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="place")
  */
-class Place {
-
+class Place implements \JsonSerializable {
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
     /**
      * @ORM\Column(type="string", length=40)
      */
     private $name;
-
     /**
      * @ORM\Column(type="string", length=250)
      */
     private $description;
-
     /**
      * @ORM\Column(type="float")
      */
     private $grade;
 
-    /**
-     * @param mixed $id
-     */
+
     public function setId($id)
     {
         $this->id = $id;
     }
-
-
     /**
      * Get id
      *
-     * @return integer
+     *  @return integer
      */
     public function getId()
     {
         return $this->id;
     }
-
     /**
      * Set name
      *
@@ -67,10 +51,8 @@ class Place {
     public function setName($name)
     {
         $this->name = $name;
-
         return $this;
     }
-
     /**
      * Get name
      *
@@ -80,7 +62,6 @@ class Place {
     {
         return $this->name;
     }
-
     /**
      * Set description
      *
@@ -91,10 +72,8 @@ class Place {
     public function setDescription($description)
     {
         $this->description = $description;
-
         return $this;
     }
-
     /**
      * Get description
      *
@@ -104,7 +83,6 @@ class Place {
     {
         return $this->description;
     }
-
     /**
      * Set grade
      *
@@ -115,10 +93,8 @@ class Place {
     public function setGrade($grade)
     {
         $this->grade = $grade;
-
         return $this;
     }
-
     /**
      * Get grade
      *
@@ -130,17 +106,18 @@ class Place {
     }
 
 
+
+    /**
+     * @return string|\Symfony\Component\Serializer\Encoder\scalar
+     *
+     * Method to jsonify Place entity
+     */
     function jsonSerialize()
     {
-
-        $encoders = array(new XmlEncoder(), new JsonEncoder());
-        $normalizers = array(new ObjectNormalizer());
-        $serializer = new Serializer($normalizers, $encoders);
-
-        $jsonContent = $serializer->serialize($this,'json');
-
-        return $jsonContent;
+        return [
+            "name"=>$this->name,
+            "description"=>$this->description,
+            "grade"=>$this->grade
+        ];
     }
-
-
 }

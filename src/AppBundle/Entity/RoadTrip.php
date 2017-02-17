@@ -2,12 +2,14 @@
 
 namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="road_trip")
  */
-class RoadTrip{
+class RoadTrip implements \JsonSerializable {
 
     /**
      * @ORM\Column(type="integer")
@@ -22,11 +24,16 @@ class RoadTrip{
     private $name;
 
 
-
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Place", inversedBy="road_trip")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Place", cascade={"persist"})
      */
-    private $places;
+    private  $places;
+
+
+    public function __construct()
+    {
+        $this->places = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -76,5 +83,28 @@ class RoadTrip{
         $this->places = $places;
     }
 
-    
+    public function addPlace(Place $place){
+        $this->places[]=$place;
+        return $this;
+    }
+
+    public function removePlace(Place $place){
+        $this->places->remove($place);
+    }
+
+    public function removeAllPlaces(){
+        $this->places->clear();
+    }
+
+    /**
+     * @return string|\Symfony\Component\Serializer\Encoder\scalar
+     *
+     * Method to jsonify roadTrip entity
+     */
+    function jsonSerialize()
+    {
+        return [
+            "name"=>$this->name,
+        ];
+    }
 }
