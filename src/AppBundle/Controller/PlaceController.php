@@ -28,7 +28,6 @@ class PlaceController extends Controller{
      * @Method("Get")
      */
     public function find($id){
-        //   echo "im in";
 
         $em = $this->getDoctrine()->getManager();
         $place = $em->getRepository('AppBundle:Place')->find($id);
@@ -65,7 +64,6 @@ class PlaceController extends Controller{
      * @Method("POST")
      */
     public function addPlace(Request $request){
-        //   echo "im in";
 
         $params = array();
         $content = $request->getContent();
@@ -92,7 +90,6 @@ class PlaceController extends Controller{
      * @Method("DELETE")
      */
     public function deletePlace($id){
-        //   echo "im in";
 
         $em = $this->getDoctrine()->getManager();
         $place = $em->find('AppBundle:Place',$id);
@@ -110,7 +107,6 @@ class PlaceController extends Controller{
      * @Method("PUT")
      */
     public function updatePlace(Request $request){
-        //   echo "im in";
 
         $params = array();
         $content = $request->getContent();
