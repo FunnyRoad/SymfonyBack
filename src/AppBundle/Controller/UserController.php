@@ -8,8 +8,18 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\User;
+
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use AppBundle\Entity\User;
+
+use Symfony\Component\HttpFoundation\Request;
+
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class UserController extends Controller
 {
@@ -23,14 +33,14 @@ class UserController extends Controller
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('AppBundle:User')->find($id);
         $em->flush();
-
+        if($user === null)return $this->json("\"error\":\"User not found\"");
         return $this->json($user->jsonSerialize());
 
     }
 
 
     /**
-     * @Route("/user", name="get_users")
+     * @Route("/users", name="get_users")
      * @Method("Get")
      *
      */
@@ -55,11 +65,14 @@ class UserController extends Controller
      * @Route("/user", name="add_user")
      * @Method("POST")
      */
-    public function addUser(Request $request){
+    public function createUser(Request $request){
 
         $params = array();
-        $content = $request->getContent();
 
+        if($request->getContent() == null)
+            return $this->json("\"error\":\"bad request\"");
+
+        $content = $request->getContent();
 
         if (!empty($content))
         {
@@ -69,11 +82,20 @@ class UserController extends Controller
         $user = new User();
 
         $user->setMail($params["mail"]);
-        $user->setFirebazeId($params["firebaseId"]);
-        $user->setFirtName($params["firstName"]);
-        $user->setLastName($params["lastName"]);
-        $user->setUsername($params["username"]);
-        $user->setBirthDate($params["birthDate"]);
+
+        $user->setfirebaseId($params["firebaseId"]);
+
+        if(isset($params["firstName"]))
+            $user->setFirtName($params["firstName"]);
+
+        if(isset($params["lastName"]))
+            $user->setLastName($params["lastName"]);
+
+        if(isset($params["username"]))
+            $user->setUsername($params["username"]);
+
+        if(isset($params["birthDate"]))
+            $user->setBirthDate($params["birthDate"]);
 
 
         $em = $this->getDoctrine()->getManager();
@@ -120,7 +142,7 @@ class UserController extends Controller
         $user = $em->getRepository('AppBundle:User')->find($params["id"]);
 
         $user->setMail($params["mail"]);
-        $user->setFirebazeId($params["firebaseId"]);
+        $user->setfirebaseId($params["firebaseId"]);
         $user->setFirtName($params["firstName"]);
         $user->setLastName($params["lastName"]);
         $user->setUsername($params["username"]);

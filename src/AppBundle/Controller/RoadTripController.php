@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\AppBundle;
 use AppBundle\Entity\Place;
+use AppBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -36,7 +37,7 @@ class RoadTripController extends Controller
     }
 
     /**
-     * @Route("/roadtrip", name="get_roadtrips")
+     * @Route("/roadtrips", name="get_roadtrips")
      * @Method("Get")
      *
      */
@@ -69,16 +70,24 @@ class RoadTripController extends Controller
         {
             $params = json_decode($content, true); // 2nd param to get as array
         }
+
         $roadTrip = new RoadTrip();
         $roadTrip->setName($params["name"]);
 
         $em = $this->getDoctrine()->getManager();
-        foreach ($params["place"] as $placeId){
-            $roadTrip->addPlace( $em->find('AppBundle:Place',$placeId));
-        }
 
+        $owner =$em->getRepository('AppBundle:User')->find($params["owner"]);
+        $roadTrip->setOwner($owner);
 
-        $em = $this->getDoctrine()->getManager();
+        if(isset($params["places"]))
+            foreach ($params["places"] as $placeId){
+                $roadTrip->addPlace( $em->getRepository('AppBundle:Place')->find($placeId));
+            }
+        if(isset($params["guests"]))
+            foreach ($params["guests"] as $guestId){
+                $roadTrip->addGuest($em->getRepository('AppBundle:User')->find($guestId));
+            }
+
         $em->persist($roadTrip);
         $em->flush();
 
@@ -89,20 +98,28 @@ class RoadTripController extends Controller
      * @Route("/roadtrip/{id}/places", name="get_roadtrip_places")
      * @Method("Get")
      */
-    public function getRoadtripPlaces($id)
+    public function getRoadtripPlaces(RoadTrip $roadTrip)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $roadTrip = $em->getRepository('AppBundle:RoadTrip')->find($id);
-        $em->flush();
-
-
         $places =  array();
         foreach ($roadTrip->getPlaces() as $placeData){
             $places[] = $placeData->jsonSerialize();
         }
-
         return $this->json($places);
+
+    }
+
+    /**
+     * @Route("/roadtrip/{roadtripId}/place/{placeId}",name="add_place_to_roadtrip")
+     * @Method("POST")
+     */
+    public function addPlaceToRoadtrip($roadtripId,$placeId){
+
+        $em = $this->getDoctrine()->getManager();
+        $roadtripId = $em->getRepository('AppBundle:RoadTrip')->find($roadtripId);
+        $place = $em->getRepository('AppBundle:Place')->find($placeId);
+        $roadtripId->addPlace($place);
+        $em->flush();
+        return $this->json('"response":"place have been added to roadtrip"');
     }
 
 
@@ -170,6 +187,24 @@ class RoadTripController extends Controller
         }
 
         $em->persist($roadTrip);
+        $em->flush();
+
+        return $this->json($roadTrip->jsonSerialize());
+    }
+
+    /**
+     * @Route("/roadtrip/{roadtripId}/place/{placeId}", name="update_roadtrip")
+     * @Method("PUT")
+     */
+    public function updateRoadtripAddPlace($roadtripId,$placeId){
+
+
+        $em = $this->getDoctrine()->getManager();
+        $roadTrip = $em->getRepository('AppBundle:RoadTrip')->find($roadtripId);
+        $place = $em->getRepository('AppBundle:Place')->find($placeId);
+
+        $roadTrip->addPlace($place);
+
         $em->flush();
 
         return $this->json($roadTrip->jsonSerialize());

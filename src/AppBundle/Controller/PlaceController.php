@@ -39,7 +39,7 @@ class PlaceController extends Controller{
 
 
     /**
-     * @Route("/place", name="get_plces")
+     * @Route("/places", name="get_plces")
      * @Method("Get")
      *
      */
@@ -74,9 +74,13 @@ class PlaceController extends Controller{
             $params = json_decode($content, true); // 2nd param to get as array
         }
         $place = new Place();
-        $place->setDescription($params["description"]);
         $place->setName($params["name"]);
-        $place->setgrade($params["grade"]);
+
+        if(isset($params["description"]))
+            $place->setDescription($params["description"]);
+
+        if(isset($params["grade"]))
+            $place->setgrade($params["grade"]);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($place);
