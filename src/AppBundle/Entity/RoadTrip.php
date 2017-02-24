@@ -30,9 +30,64 @@ class RoadTrip implements \JsonSerializable {
     private  $places;
 
 
+    /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User", inversedBy="roadtrip")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $guests;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $owner;
+
     public function __construct()
     {
         $this->places = new ArrayCollection();
+        $this->guests = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param mixed $owner
+     */
+    public function setOwner($owner)
+    {
+        $this->owner = $owner;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGuests()
+    {
+        return $this->guests;
+    }
+
+    /**
+     * @param mixed $guests
+     */
+    public function setGuests(User $guests)
+    {
+        $this->guests = $guests;
+    }
+
+    public function addGuest(User $guest){
+        $this->guests[]=$guest;
+        $guest->addRoadtrip($this);
+        return $this;
+    }
+
+    public function removeGuest(User $guest){
+        $this->guests->removeElement($guest);
     }
 
     /**
@@ -105,6 +160,7 @@ class RoadTrip implements \JsonSerializable {
     {
         return [
             "name"=>$this->name,
+            "owner"=>$this->owner,
         ];
     }
 }

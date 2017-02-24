@@ -8,11 +8,12 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 
 /**
- * @ORM/Entity
+ * @ORM\Entity
  * @ORM\Table(name="user")
  */
 class User implements \JsonSerializable
@@ -27,9 +28,9 @@ class User implements \JsonSerializable
     private $id;
 
     /**
-     * @ORM\Column(type="integer",nullable=false)
+     * @ORM\Column(type="string",nullable=false)
      */
-    private $firebazeId;
+    private $firebaseId;
 
     /**
      * @ORM\Column(type="string",nullable=false,length=50)
@@ -37,24 +38,58 @@ class User implements \JsonSerializable
     private $mail;
 
     /**
-     * @ORM\Column(type="string",length=40)
+     * @ORM\Column(type="string",length=40,nullable=true)
      */
     private $firtName;
 
-    /*
-     * @ORM\Column(type="string",length=40)
+    /**
+     * @ORM\Column(type="string",length=40,nullable=true)
      */
     private $lastName;
 
     /**
-     * @ROM\Column(type="string",length=40)
+     * @ORM\Column(type="string",length=40,nullable=true)
      */
     private $username;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date",nullable=true)
      */
     private $birthDate;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\RoadTrip" , mappedBy="guests")
+     */
+    private $roadtrips;
+
+    public function __construct(){
+        $this->roadtrips=new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRoadtrips()
+    {
+        return $this->roadtrips;
+    }
+
+    /**
+     * @param mixed $roadtrips
+     */
+    public function setRoadtrips($roadtrips)
+    {
+        $this->roadtrips = $roadtrips;
+    }
+
+    public function addRoadtrip(RoadTrip $roadtrip){
+        $this->roadtrips[]=$roadtrip;
+        return $this;
+    }
+
+    public function removeRoadtrip(RoadTrip $roadtrip){
+        $this->roadtrips->removeElement($roadtrip);
+    }
 
     /**
      * @return mixed
@@ -123,17 +158,17 @@ class User implements \JsonSerializable
     /**
      * @return mixed
      */
-    public function getFirebazeId()
+    public function getfirebaseId()
     {
-        return $this->firebazeId;
+        return $this->firebaseId;
     }
 
     /**
-     * @param mixed $firebazeId
+     * @param mixed $firebaseId
      */
-    public function setFirebazeId($firebazeId)
+    public function setfirebaseId($firebaseId)
     {
-        $this->firebazeId = $firebazeId;
+        $this->firebaseId = $firebaseId;
     }
 
     /**
@@ -180,7 +215,7 @@ class User implements \JsonSerializable
     {
         return [
             "id"=>$this->id,
-            "firebazeId"=>$this->firebazeId,
+            "firebaseId"=>$this->firebaseId,
             "username"=>$this->username,
             "mail"=>$this->mail,
             "firstnName"=>$this->firtName,
