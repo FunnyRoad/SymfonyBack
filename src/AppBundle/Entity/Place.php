@@ -19,11 +19,11 @@ class Place implements \JsonSerializable {
      */
     private $name;
     /**
-     * @ORM\Column(type="string", length=250)
+     * @ORM\Column(type="string", length=250,nullable=true)
      */
     private $description;
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float",nullable=true)
      */
     private $grade;
 
