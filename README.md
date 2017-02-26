@@ -47,7 +47,8 @@ Url: {api-base-path}/user
 ```json
 {  
 	"mail":"mail address", //obligatory  
-	"firebaseId":"", //obligatory  
+	"firebaseId":"", //obligatory  	  
+	"city":"",  
 	"firstName":"",  
 	"lastName":"",  
 	"username:"",  
@@ -63,6 +64,7 @@ Return json object which contains the created user with his symfony id
   	"id":"",  
 	"mail":"mail address", //obligatory  
 	"firebaseId":"", //obligatory  
+	"city":"",  
 	"firstName":"",  
 	"lastName":"",  
 	"username:"",  
@@ -93,6 +95,7 @@ Url: {api-base-path}/user
 	"id":"", //Symfony id  
 	"mail":"mail address", //obligatory  
 	"firebaseId":"", //obligatory  
+	"city":"",  
 	"firstName":"",  
 	"lastName":"",  
 	"username:"",  
@@ -108,6 +111,7 @@ Return json object which contains the created user with his symfony id
   	"id":"",  
 	"mail":"mail address", //obligatory  
 	"firebaseId":"", //obligatory  
+	"city":"",  
 	"firstName":"",  
 	"lastName":"",  
 	"username:"",  
@@ -124,6 +128,8 @@ Url: {api-base-path}/place
 ```json
 {  
 	"name":"Ma place", // Obligatory field  
+ 	"latitude":,// Obligatory field  
+	"longitude":,// Obligatory field  
 	"description":"Custom description",   
 	"grade":9   
 }  
@@ -137,7 +143,9 @@ Url: {api-base-path}/place
 	"id":2,    
 	"name":"Ma place",   
 	"description":"Custom description",   
-	"grade":   
+	"grade":,  
+ 	"latitude":,  
+	"longitude":     
 }  
 ```
 ### Find one place
@@ -151,9 +159,11 @@ Return json content
 ```json
 {  
 	"id":,    
-	"name":"",   
+	"name":"",  
 	"description":"",   
-	"grade":   
+	"grade":,  
+ 	"latitude":,  
+	"longitude":  
 }  
 ```
 

@@ -14,11 +14,6 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Place;
 
 
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-
 class PlaceController extends Controller{
 
 
@@ -32,7 +27,6 @@ class PlaceController extends Controller{
         $em = $this->getDoctrine()->getManager();
         $place = $em->getRepository('AppBundle:Place')->find($id);
         $em->flush();
-        dump($place->getRoadtrip());
         return $this->json($place->jsonSerialize());
 
     }
@@ -45,18 +39,11 @@ class PlaceController extends Controller{
      */
     public function findAll(){
 
-        $encoders = array(new XmlEncoder(), new JsonEncoder());
-        $normalizers = array(new ObjectNormalizer());
-        $serializer = new Serializer($normalizers, $encoders);
-
-
         $places = $this->getDoctrine()
             ->getRepository('AppBundle:Place')
             ->findAll();
 
-        $jsonContent = $serializer->serialize($places, 'json');
-
-        return $this->json($jsonContent);
+        return $this->json($places);
     }
 
     /**
@@ -75,7 +62,8 @@ class PlaceController extends Controller{
         }
         $place = new Place();
         $place->setName($params["name"]);
-
+        $place->setLatitude($params["latitude"]);
+        $place->setLongitude($params["longitude"]);
         if(isset($params["description"]))
             $place->setDescription($params["description"]);
 
@@ -88,7 +76,6 @@ class PlaceController extends Controller{
 
         return $this->json($place->jsonSerialize());
     }
-
     /**
      * @Route("/place/{id}", name="place")
      * @Method("DELETE")
@@ -111,7 +98,6 @@ class PlaceController extends Controller{
      * @Method("PUT")
      */
     public function updatePlace(Request $request){
-
         $params = array();
         $content = $request->getContent();
 
@@ -122,9 +108,15 @@ class PlaceController extends Controller{
         }
         $place = new Place();
         $place->setId($params["id"]);
-        $place->setDescription($params["description"]);
         $place->setName($params["name"]);
-        $place->setgrade($params["grade"]);
+        $place->setLatitude($params["latitude"]);
+        $place->setLongitude($params["longitude"]);
+
+        if(isset($params["description"]))
+            $place->setDescription($params["description"]);
+        if(isset($params["grade"]))
+            $place->setgrade($params["grade"]);
+
 
         $em = $this->getDoctrine()->getManager();
         $em->merge($place);

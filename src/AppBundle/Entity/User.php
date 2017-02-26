@@ -62,6 +62,11 @@ class User implements \JsonSerializable
      */
     private $roadtrips;
 
+    /**
+     * @ORM\Column(type="string",nullable=true)
+     */
+    private $city;
+
     public function __construct(){
         $this->roadtrips=new ArrayCollection();
     }
@@ -205,6 +210,23 @@ class User implements \JsonSerializable
     }
 
     /**
+     * @return mixed
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * @param mixed $city
+     */
+    public function setCity($city)
+    {
+        $this->city = $city;
+    }
+
+
+    /**
      * Specify data which should be serialized to JSON
      * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
      * @return mixed data which can be serialized by <b>json_encode</b>,
@@ -220,7 +242,8 @@ class User implements \JsonSerializable
             "mail"=>$this->mail,
             "firstnName"=>$this->firtName,
             "lastName"=>$this->lastName,
-            "birthDate"=>$this->birthDate
+            "birthDate"=>$this->birthDate,
+            "city"=>$this->city
         ];
     }
 }

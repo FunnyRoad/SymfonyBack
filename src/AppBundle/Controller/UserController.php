@@ -96,7 +96,8 @@ class UserController extends Controller
 
         if(isset($params["birthDate"]))
             $user->setBirthDate($params["birthDate"]);
-
+        if(isset($params["city"]))
+            $user->setCity($params["city"]);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($user);
