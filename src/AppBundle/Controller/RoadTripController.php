@@ -15,11 +15,6 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\RoadTrip;
 
 
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-
 class RoadTripController extends Controller
 {
     /**
@@ -42,17 +37,13 @@ class RoadTripController extends Controller
      *
      */
     public function findAll(){
-          $encoders = array(new XmlEncoder(), new JsonEncoder());
-          $normalizers = array(new ObjectNormalizer());
-          $serializer = new Serializer($normalizers, $encoders);
 
           $places = $this->getDoctrine()
               ->getRepository('AppBundle:RoadTrip')
               ->findAll();
 
-          $jsonContent = $serializer->serialize($places, 'json');
 
-          return $this->json($jsonContent);
+          return $this->json($places);
     }
 
 

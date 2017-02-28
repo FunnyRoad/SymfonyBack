@@ -19,9 +19,17 @@ class RoadTrip implements \JsonSerializable {
     private $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string",length=40,nullable=true)
      */
     private $name;
+    /**
+     * @ORM\Column(type="string",nullable=false)
+     */
+    private $departure;
+    /**
+     * @ORM\Column(type="string",nullable=false)
+     */
+    private $arrival;
 
 
     /**
@@ -47,6 +55,39 @@ class RoadTrip implements \JsonSerializable {
         $this->places = new ArrayCollection();
         $this->guests = new ArrayCollection();
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDeparture()
+    {
+        return $this->departure;
+    }
+
+    /**
+     * @param mixed $departure
+     */
+    public function setDeparture($departure)
+    {
+        $this->departure = $departure;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getArrival()
+    {
+        return $this->arrival;
+    }
+
+    /**
+     * @param mixed $arrival
+     */
+    public function setArrival($arrival)
+    {
+        $this->arrival = $arrival;
+    }
+
 
     /**
      * @return mixed
