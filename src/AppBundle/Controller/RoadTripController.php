@@ -3,10 +3,7 @@
 namespace AppBundle\Controller;
 
 
-use AppBundle\AppBundle;
-use AppBundle\Entity\Place;
-use AppBundle\Entity\User;
-use Doctrine\Common\Collections\ArrayCollection;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -64,6 +61,8 @@ class RoadTripController extends Controller
 
         $roadTrip = new RoadTrip();
         $roadTrip->setName($params["name"]);
+        $roadTrip->setDeparture($params["departure"]);
+        $roadTrip->setArrival($params["arrival"]);
 
         $em = $this->getDoctrine()->getManager();
 
@@ -170,6 +169,9 @@ class RoadTripController extends Controller
         $roadTrip = $em->getRepository('AppBundle:RoadTrip')->find($params["id"]);
 
         $roadTrip->setName($params["name"]);
+        $roadTrip->setDeparture($params["departure"]);
+        $roadTrip->setArrival($params["arrival"]);
+        
         if(isset($params["places"])){
             $roadTrip->removeAllPlaces();
             foreach ($params["place"] as $placeId){
