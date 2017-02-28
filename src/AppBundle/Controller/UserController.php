@@ -16,10 +16,6 @@ use AppBundle\Entity\User;
 
 use Symfony\Component\HttpFoundation\Request;
 
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class UserController extends Controller
 {
@@ -46,18 +42,11 @@ class UserController extends Controller
      */
     public function findAll(){
 
-        $encoders = array(new XmlEncoder(), new JsonEncoder());
-        $normalizers = array(new ObjectNormalizer());
-        $serializer = new Serializer($normalizers, $encoders);
-
-
         $users = $this->getDoctrine()
             ->getRepository('AppBundle:User')
             ->findAll();
 
-        $jsonContent = $serializer->serialize($users, 'json');
-
-        return $this->json($jsonContent);
+        return $this->json($users);
     }
 
 
@@ -86,7 +75,7 @@ class UserController extends Controller
         $user->setfirebaseId($params["firebaseId"]);
 
         if(isset($params["firstName"]))
-            $user->setFirtName($params["firstName"]);
+            $user->setFirstName($params["firstName"]);
 
         if(isset($params["lastName"]))
             $user->setLastName($params["lastName"]);
@@ -144,7 +133,7 @@ class UserController extends Controller
 
         $user->setMail($params["mail"]);
         $user->setfirebaseId($params["firebaseId"]);
-        $user->setFirtName($params["firstName"]);
+        $user->setFirstName($params["firstName"]);
         $user->setLastName($params["lastName"]);
         $user->setUsername($params["username"]);
         $user->setBirthDate($params["birthDate"]);

@@ -40,7 +40,7 @@ class User implements \JsonSerializable
     /**
      * @ORM\Column(type="string",length=40,nullable=true)
      */
-    private $firtName;
+    private $firstName;
 
     /**
      * @ORM\Column(type="string",length=40,nullable=true)
@@ -115,17 +115,17 @@ class User implements \JsonSerializable
     /**
      * @return mixed
      */
-    public function getFirtName()
+    public function getFirstName()
     {
-        return $this->firtName;
+        return $this->firstName;
     }
 
     /**
      * @param mixed $firtName
      */
-    public function setFirtName($firtName)
+    public function setFirstName($firstName)
     {
-        $this->firtName = $firtName;
+        $this->firstName = $firstName;
     }
 
     /**
@@ -240,7 +240,7 @@ class User implements \JsonSerializable
             "firebaseId"=>$this->firebaseId,
             "username"=>$this->username,
             "mail"=>$this->mail,
-            "firstnName"=>$this->firtName,
+            "firstnName"=>$this->firstName,
             "lastName"=>$this->lastName,
             "birthDate"=>$this->birthDate,
             "city"=>$this->city
