@@ -70,6 +70,9 @@ class PlaceController extends Controller{
         if(isset($params["grade"]))
             $place->setgrade($params["grade"]);
 
+        if(isset($params["type"]))
+            $place->setType($params["type"]);
+
         $em = $this->getDoctrine()->getManager();
         $em->persist($place);
         $em->flush();
@@ -112,6 +115,8 @@ class PlaceController extends Controller{
         $place->setLatitude($params["latitude"]);
         $place->setLongitude($params["longitude"]);
 
+        if(isset($params["type"]))
+            $place->setType($params["type"]);
         if(isset($params["description"]))
             $place->setDescription($params["description"]);
         if(isset($params["grade"]))

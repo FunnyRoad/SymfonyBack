@@ -36,6 +36,11 @@ class Place implements \JsonSerializable {
      * @ORM\Column(type="float",nullable=true)
      */
     private $grade;
+    /**
+     * @ORM\Column(type="string",nullable=false,length=50)
+     */
+    private $type;
+
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Picture",mappedBy="place")
@@ -72,6 +77,23 @@ class Place implements \JsonSerializable {
     {
         $this->pictures = $pictures;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param mixed $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+
 
     public function setId($id)
     {
