@@ -1,7 +1,9 @@
 <?php
 // src/AppBundle/Entity/Place.php
 namespace AppBundle\Entity;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -35,6 +37,41 @@ class Place implements \JsonSerializable {
      */
     private $grade;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Picture",mappedBy="place")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $pictures;
+
+    public function __construct()
+    {
+        $this->pictures = new ArrayCollection();
+    }
+
+    public function addPicture(Picture $picture){
+        $this->pictures[]=$picture;
+        $picture->setPlace($this);
+        return $this;
+    }
+
+    public function removePicture(Picture $picture){
+        $this->pictures->removeElement($picture);
+    }
+    /**
+     * @return mixed
+     */
+    public function getPictures()
+    {
+        return $this->pictures;
+    }
+
+    /**
+     * @param mixed $pictures
+     */
+    public function setPictures($pictures)
+    {
+        $this->pictures = $pictures;
+    }
 
     public function setId($id)
     {
@@ -145,7 +182,6 @@ class Place implements \JsonSerializable {
     {
         return $this->grade;
     }
-
 
 
     /**
