@@ -32,7 +32,7 @@ class PictureController extends Controller
      * @Route("/place/{placeId}/picture",name="add_picture_to_place")
      * @Method("POST")
      */
-    public function addPicture(Request $request,$placeId){
+    public function addPictureToPlace(Request $request,$placeId){
         $em = $this->getDoctrine()->getManager();
         $place = $em->getRepository('AppBundle:Place')->find($placeId);
 
@@ -65,7 +65,7 @@ class PictureController extends Controller
      * @Route("/place/{place}/pictures",name="list_of_pictures_id")
      * @Method("Get")
      */
-    public function getPicturesIdOfPlace(Place $place){
+    public function getPicturesOfPlace(Place $place){
 
         $em = $this->getDoctrine()->getManager();
         $pictures = $em->getRepository('AppBundle:Picture')
@@ -74,10 +74,10 @@ class PictureController extends Controller
     }
 
     /**
-     * @Route("/picture/{picture}",name="get_pictures_of_place")
+         * @Route("Get",name="get_picture")
      * @Method("GET")
      */
-    public function getPlacePictures(Picture $picture){
+    public function getPicture(Picture $picture){
 
         $file = new SplFileInfo( $this->getParameter('pictures_directory').'/'.$picture->getId().".".$picture->getType());
         $response = new BinaryFileResponse($file);

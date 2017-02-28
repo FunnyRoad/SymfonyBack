@@ -171,7 +171,7 @@ class RoadTripController extends Controller
         $roadTrip->setName($params["name"]);
         $roadTrip->setDeparture($params["departure"]);
         $roadTrip->setArrival($params["arrival"]);
-        
+
         if(isset($params["places"])){
             $roadTrip->removeAllPlaces();
             foreach ($params["place"] as $placeId){
