@@ -31,7 +31,6 @@ class PlaceController extends Controller{
 
     }
 
-
     /**
      * @Route("/places", name="get_plces")
      * @Method("Get")
@@ -42,6 +41,26 @@ class PlaceController extends Controller{
         $places = $this->getDoctrine()
             ->getRepository('AppBundle:Place')
             ->findAll();
+
+        return $this->json($places);
+    }
+
+    /**
+     * @Route("/places",name="find_by_list_ids")
+     * @Method("Post")
+     */
+    public function findByListId(Request $request){
+        $em = $this->getDoctrine()->getManager()->getRepository('AppBundle:Place');
+        $places = array();
+        $content = $request->getContent();
+
+        if (!empty($content))
+        {
+            $params = json_decode($content, true); // 2nd param to get as array
+        }
+        foreach ($params["placesId"] as $placeId){
+            $places[]=$em->find($placeId);
+        }
 
         return $this->json($places);
     }
