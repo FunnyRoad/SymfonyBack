@@ -19,6 +19,7 @@ api-base-path:
   * Update place
   * Find place
   * Find all places
+  * Find list places by ids
   * Delete place
   
 * Entity RoadTrip 
@@ -123,7 +124,7 @@ Return json object which contains the created user with his symfony id
 	"lastName":"",  
 	"username:"",  
 	"birthDate":""  
-}
+}4
 ```
 
 # Place 
@@ -185,6 +186,16 @@ Method: GET
 Url: {api-base-path}/places  
 
 Return Json array with list of places
+
+###Find list places by ids
+HTTP Request
+Method: POST
+Url: {api-base-path}/places
+```json
+{    
+    "placesId":[1,2] //list places id	  
+}  
+```
 
 ### Delete place
 
