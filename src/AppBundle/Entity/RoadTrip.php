@@ -22,10 +22,12 @@ class RoadTrip implements \JsonSerializable {
      * @ORM\Column(type="string",length=40,nullable=true)
      */
     private $name;
+
     /**
-     * @ORM\Column(type="string",nullable=false)
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Departure",cascade={"persist"},inversedBy="roadtrip")
      */
     private $departure;
+
     /**
      * @ORM\Column(type="string",nullable=false)
      */
@@ -36,7 +38,6 @@ class RoadTrip implements \JsonSerializable {
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Place", cascade={"persist"})
      */
     private  $places;
-
 
     /**
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User", inversedBy="roadtrip")
@@ -67,9 +68,10 @@ class RoadTrip implements \JsonSerializable {
     /**
      * @param mixed $departure
      */
-    public function setDeparture($departure)
+    public function setDeparture(Departure $departure)
     {
         $this->departure = $departure;
+        $departure->setRoadtrip($this);
     }
 
     /**
@@ -200,8 +202,11 @@ class RoadTrip implements \JsonSerializable {
     function jsonSerialize()
     {
         return [
+            "id"=>$this->id,
             "name"=>$this->name,
             "owner"=>$this->owner,
+            "arrival"=>$this->arrival,
+            "departure"=>$this->departure
         ];
     }
 }
