@@ -215,8 +215,12 @@ Url: {api-base-path}/roadtrip
 {  
 	"name":"Ma place", //Obligatory field  
 	"owner":, //Obligatory field, User id of the roadtrip owner   
-	"departure":"",  
-	"arrival":"",  	
+	"departure":{  
+		"googleId":"", //not obligatory
+		"latitude":82,//obligatory           
+   		"longitude":64//obligatory  
+	},//obligatory  
+	"arrival":"",//obligatory  
 	"places":[1,2] //list of places id of a roadtrip  
 	"guests":[] //list of roadtrip guests
 }  
@@ -229,7 +233,11 @@ Url: {api-base-path}/roadtrip
 {  
 	"id":, // Roadtrip id   
 	"name":"Ma place" // Roadtrip name  
-	"departure":"",  
+	"departure":{  
+		"googleId":"",
+		"latitude":82,           
+   		"longitude":64  
+	},  	
 	"arrival":"",  	
 }  
 ```
@@ -239,7 +247,11 @@ or
 {  
 	"id":,  
 	"name":"Ma place", // Roadtrip name  
-	"departure":"",  
+	"departure":{  
+		"googleId":"", //not obligatory
+		"latitude":82,           
+   		"longitude":64  
+	},  
 	"arrival":"",  	
 	"places":[1,2...] //list of places id of a roadtrip
 }  
@@ -259,7 +271,11 @@ return json content
 	"id":,
 	"name":"Ma place", // Roadtrip name  
 	"places":[1,2...], //list of places id of a roadtrip  
-	"departure":"",  
+	"departure":{  
+		"googleId":"", //not obligatory
+		"latitude":82,           
+   		"longitude":64  
+	},
 	"arrival":"",  	
 	"owner"{
 		//Json object of user	
@@ -326,7 +342,7 @@ Return json array which contains the guests list
 HTTP Request  
 Method: PUT  
 Url: {api-base-path}/guest/{guestId}/roadTrip/{roadtripId}  
-
+	
 
 ###Remove guest from roadtrip
 
