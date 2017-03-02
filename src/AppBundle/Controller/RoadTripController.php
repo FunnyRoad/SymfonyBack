@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 
 
+use AppBundle\Entity\Departure;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -11,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\RoadTrip;
 
+use Doctrine\ORM\Query\ResultSetMapping;
 
 class RoadTripController extends Controller
 {
@@ -61,8 +63,16 @@ class RoadTripController extends Controller
 
         $roadTrip = new RoadTrip();
         $roadTrip->setName($params["name"]);
-        $roadTrip->setDeparture($params["departure"]);
         $roadTrip->setArrival($params["arrival"]);
+
+        $departureData = $params["departure"];
+        $departure = new Departure();
+        $departure->setLatitude($departureData["latitude"]);
+        $departure->setLongitude($departureData["longitude"]);
+        if(isset($departureData["googleId"]))
+            $departure->setGoogleId($departureData["googleId"]);
+        
+        $roadTrip->setDeparture($departure);
 
         $em = $this->getDoctrine()->getManager();
 
@@ -202,4 +212,36 @@ class RoadTripController extends Controller
 
         return $this->json($roadTrip->jsonSerialize());
     }
+
+    /**
+     * @Route("/roadtrip/nearest/{latitude}/{longitude}",name="nearest_roadtrips")
+     * @Method("GET")
+     */
+    public function getNearestsRoadtrips($latitude,$longitude){
+
+        $latitude = 64;
+        $longitude= 82;
+        $em = $this->getDoctrine()->getManager();
+
+        $results = new ResultSetMapping();
+        $query = $em->createNativeQuery("
+            SELECT * FROM departure AS a
+            WHERE  111.1111 *
+            DEGREES(ACOS(COS(RADIANS(:latitude))
+                 * COS(RADIANS(a.latitude))
+                 * COS(RADIANS(:longitude - a.longitude))
+                 + SIN(RADIANS(:latitude))
+                 * SIN(RADIANS(a.latitude)))) <1000
+         ",
+            $results);
+        $query->setParameter('latitude',$latitude);
+        $query->setParameter("longitude",$longitude);
+
+        $product = $query->getResult();
+
+        var_dump($results);
+
+        return $this->json($results);
+    }
+
 }

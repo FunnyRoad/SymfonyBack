@@ -18,14 +18,6 @@ class GuestResources extends Controller
 {
 
     /**
-     * @Route("test",name="test")
-     * @Method("get")
-     */
-    public function test(){
-        
-    }
-
-    /**
      * @Route("/guest/{guestId}/roadtrips", name="get_user_roadtrip")
      * @Method("Get")
      */
