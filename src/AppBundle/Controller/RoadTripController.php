@@ -25,9 +25,8 @@ class RoadTripController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $roadTrip = $em->getRepository('AppBundle:RoadTrip')->find($id);
-        $em->flush();
 
-        return $this->json($roadTrip->jsonSerialize());
+        return $this->json($roadTrip);
     }
 
     /**
@@ -71,7 +70,7 @@ class RoadTripController extends Controller
         $departure->setLongitude($departureData["longitude"]);
         if(isset($departureData["googleId"]))
             $departure->setGoogleId($departureData["googleId"]);
-        
+
         $roadTrip->setDeparture($departure);
 
         $em = $this->getDoctrine()->getManager();
@@ -214,34 +213,16 @@ class RoadTripController extends Controller
     }
 
     /**
-     * @Route("/roadtrip/nearest/{latitude}/{longitude}",name="nearest_roadtrips")
+     * @Route("/roadtrip/nearest/{latitude}/{longitude}/{distance}",name="nearest_roadtrips")
      * @Method("GET")
      */
-    public function getNearestsRoadtrips($latitude,$longitude){
+    public function getNearestsRoadtrips($latitude,$longitude,$distance = 50){
 
-        $latitude = 64;
-        $longitude= 82;
+        $distance = $distance*1000;
         $em = $this->getDoctrine()->getManager();
-
-        $results = new ResultSetMapping();
-        $query = $em->createNativeQuery("
-            SELECT * FROM departure AS a
-            WHERE  111.1111 *
-            DEGREES(ACOS(COS(RADIANS(:latitude))
-                 * COS(RADIANS(a.latitude))
-                 * COS(RADIANS(:longitude - a.longitude))
-                 + SIN(RADIANS(:latitude))
-                 * SIN(RADIANS(a.latitude)))) <1000
-         ",
-            $results);
-        $query->setParameter('latitude',$latitude);
-        $query->setParameter("longitude",$longitude);
-
-        $product = $query->getResult();
-
-        var_dump($results);
-
-        return $this->json($results);
+        return $this->json(
+            $em->getRepository('AppBundle:RoadTrip')->findByNearestRoadtripsDeparture($latitude,$longitude,$distance)
+        );
     }
 
 }
