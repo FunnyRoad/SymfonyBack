@@ -109,7 +109,9 @@ class UserController extends Controller
         $em->remove($user);
         $em->flush();
 
-        return "heve been removed";
+
+        $success['success'] = "User have been removed ";
+        return $this->json($success);
 
     }
 
@@ -133,10 +135,15 @@ class UserController extends Controller
 
         $user->setMail($params["mail"]);
         $user->setfirebaseId($params["firebaseId"]);
-        $user->setFirstName($params["firstName"]);
-        $user->setLastName($params["lastName"]);
-        $user->setUsername($params["username"]);
-        $user->setBirthDate($params["birthDate"]);
+
+        if(isset($params["firstName"]))
+            $user->setFirstName($params["firstName"]);
+        if(isset($params["lastName"]))
+            $user->setLastName($params["lastName"]);
+        if(isset($params["username"]))
+            $user->setUsername($params["username"]);
+        if(isset($params["birthDate"]))
+            $user->setBirthDate($params["birthDate"]);
 
 
         $em->flush();

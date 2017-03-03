@@ -109,7 +109,8 @@ class PlaceController extends Controller{
         $em->remove($place);
         $em->flush();
 
-        return "heve been removed";
+        $success['success']="place have been removed";
+        return $this->json($success);
 
     }
 

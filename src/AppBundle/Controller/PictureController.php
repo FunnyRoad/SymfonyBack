@@ -98,6 +98,7 @@ class PictureController extends Controller
         $em->remove($picture);
         $em->flush();
 
-        return $this->json($place->getPictures());
+        $success['success'] = "Picture heve been removed";
+        return $this->json($success);
     }
 }

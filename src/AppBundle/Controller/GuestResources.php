@@ -60,7 +60,9 @@ class GuestResources extends Controller
         $roadtrip = $em->getRepository('AppBundle:RoadTrip')->find($roadtripId);
         $roadtrip->addguest($guest);
         $em->flush();
-        return $this->json('"response":"guest have been added"');
+
+        $success['success'] = "guest have been added";
+        return $this->json($success);
     }
 
     /**
@@ -73,7 +75,9 @@ class GuestResources extends Controller
         $roadtrip = $em->getRepository('AppBundle:RoadTrip')->find($roadtripId);
         $roadtrip->removeguest($guest);
         $em->flush();
-        return $this->json('"response":"guest have been added"');
+
+        $success['success'] = "guest have been removed";
+        return $this->json($success);
     }
 
 }

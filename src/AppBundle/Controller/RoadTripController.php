@@ -136,7 +136,6 @@ class RoadTripController extends Controller
 
         $em->flush();
 
-        return "Place heve been removed from roadTrip";
 
     }
 
@@ -152,7 +151,8 @@ class RoadTripController extends Controller
         $em->remove($roadTrip);
         $em->flush();
 
-        return "heve been removed";
+        $success['success']="roadtrip have been removed";
+        return $this->json($success);
 
     }
 
@@ -178,12 +178,18 @@ class RoadTripController extends Controller
         $roadTrip = $em->getRepository('AppBundle:RoadTrip')->find($params["id"]);
 
         $roadTrip->setName($params["name"]);
-        $roadTrip->setDeparture($params["departure"]);
         $roadTrip->setArrival($params["arrival"]);
+
+        $departureData = $params["departure"];
+        $departure = new Departure();
+        $departure->setLatitude($departureData["latitude"]);
+        $departure->setLongitude($departureData["longitude"]);
+        if(isset($departureData["googleId"]))
+            $departure->setGoogleId($departureData["googleId"]);
 
         if(isset($params["places"])){
             $roadTrip->removeAllPlaces();
-            foreach ($params["place"] as $placeId){
+            foreach ($params["places"] as $placeId){
                 $roadTrip->addPlace( $em->find('AppBundle:Place',$placeId));
             }
         }
@@ -195,7 +201,7 @@ class RoadTripController extends Controller
     }
 
     /**
-     * @Route("/roadtrip/{roadtripId}/place/{placeId}", name="update_roadtrip")
+     * @Route("/roadtrip/{roadtripId}/place/{placeId}", name="update_roadtrip_places")
      * @Method("PUT")
      */
     public function updateRoadtripAddPlace($roadtripId,$placeId){
