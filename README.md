@@ -21,6 +21,7 @@ api-base-path:
   * Find all places
   * Find list places by ids
   * Delete place
+  * Find nearest Places
   
 * Entity RoadTrip 
   * Create roadtrip
@@ -30,6 +31,7 @@ api-base-path:
   * Find places of roadtrip
   * Delete roadtrip
   * Delete one place from a roadtrip
+  * Find nearest Roadtrips
 
 * Actions on roadtrips <-> geust
 Guests are user that have been invited to roadtrip  
@@ -198,10 +200,16 @@ Url: {api-base-path}/places
 ```
 
 ### Delete place
-
 HTTP Request  
 Method: DELETE  
 Url: {api-base-path}/place/{place_id}  
+
+### Find nearest places
+HTTP Request
+Method: GET
+url: {api-base-path}/place/nearest/{latitude}/{longitude}/{distance}
+
+You can give the max distance you want for search (in km), by defaul, the distance is 50km
 
 
 #RoadTrip
@@ -318,6 +326,13 @@ HTTP Request
 Method: DELETE  
 URL: {api-base-path}/roadtrip/{roadtripId}/place/{placeId}  
 
+
+### Find nearest roadtrips
+HTTP Request
+Method: GET
+url: {api-base-path}/roadtrip/nearest/{latitude}/{longitude}/{distance}
+
+You can give the max distance you want for search (in km), by defaul, the distance is 50km
 
 #Actions on roadtrips <-> geust
  
