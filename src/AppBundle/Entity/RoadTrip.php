@@ -187,7 +187,7 @@ class RoadTrip implements \JsonSerializable {
     }
 
     public function removePlace(Place $place){
-        $this->places->remove($place);
+        $this->places->removeElement($place);
     }
 
     public function removeAllPlaces(){

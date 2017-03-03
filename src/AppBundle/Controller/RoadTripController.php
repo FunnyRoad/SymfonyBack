@@ -114,16 +114,16 @@ class RoadTripController extends Controller
     public function addPlaceToRoadtrip($roadtripId,$placeId){
 
         $em = $this->getDoctrine()->getManager();
-        $roadtripId = $em->getRepository('AppBundle:RoadTrip')->find($roadtripId);
+        $roadtrip = $em->getRepository('AppBundle:RoadTrip')->find($roadtripId);
         $place = $em->getRepository('AppBundle:Place')->find($placeId);
-        $roadtripId->addPlace($place);
+        $roadtrip->addPlace($place);
         $em->flush();
-        return $this->json('"response":"place have been added to roadtrip"');
+        return $this->json($roadtrip);
     }
 
 
     /**
-     * @Route("/roadtrip/{roadtripId}/place/{placeId}", name="delete_roadtip")
+     * @Route("/roadtrip/{roadtripId}/place/{placeId}", name="delete_place_from_roadtip")
      * @Method("DELETE")
      */
     public function deleteRoadTripPlace($roadtripId,$placeId){
@@ -136,6 +136,9 @@ class RoadTripController extends Controller
 
         $em->flush();
 
+
+        $success['success']="Place have been removed from roadtrip";
+        return $this->json($success);
 
     }
 
