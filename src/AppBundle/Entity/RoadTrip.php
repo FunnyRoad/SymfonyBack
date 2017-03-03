@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\RoadTripRepository")
  * @ORM\Table(name="road_trip")
  */
 class RoadTrip implements \JsonSerializable {
