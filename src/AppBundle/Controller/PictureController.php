@@ -74,7 +74,7 @@ class PictureController extends Controller
     }
 
     /**
-         * @Route("Get",name="get_picture")
+     * @Route("/picture/{picture}",name="get_picture")
      * @Method("GET")
      */
     public function getPicture(Picture $picture){
