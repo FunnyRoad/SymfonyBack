@@ -62,6 +62,12 @@ class User implements \JsonSerializable
      */
     private $roadtrips;
 
+
+    /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\RoadTrip" , mappedBy="followers")
+     */
+    private $followed;
+
     /**
      * @ORM\Column(type="string",nullable=true)
      */
@@ -69,6 +75,32 @@ class User implements \JsonSerializable
 
     public function __construct(){
         $this->roadtrips=new ArrayCollection();
+        $this->followed = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFollowed()
+    {
+        return $this->followed;
+    }
+
+    /**
+     * @param mixed $followed
+     */
+    public function setFollowed($followed)
+    {
+        $this->followed = $followed;
+    }
+
+    public function addFollowed(RoadTrip $roadTrip){
+        $this->followed[]=$roadTrip;
+        return $this;
+    }
+
+    public function removeFollowed(RoadTrip $roadtrip){
+        $this->followed->removeElement($roadtrip);
     }
 
     /**
@@ -76,7 +108,11 @@ class User implements \JsonSerializable
      */
     public function getRoadtrips()
     {
-        return $this->roadtrips;
+        $respone = array();
+        foreach ($this->roadtrips as $roadtrip){
+            $respone[] = $roadtrip->jsonSerialize();
+        }
+        return $respone;
     }
 
     /**

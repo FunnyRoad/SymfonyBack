@@ -46,6 +46,13 @@ class RoadTrip implements \JsonSerializable {
     private $guests;
 
     /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User", inversedBy="followed")
+     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinTable(name="road_trip_followers")
+     */
+    private $followers;
+
+    /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -55,6 +62,37 @@ class RoadTrip implements \JsonSerializable {
     {
         $this->places = new ArrayCollection();
         $this->guests = new ArrayCollection();
+        $this->followers = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFollowers()
+    {
+        $respone = array();
+        foreach ($this->followers as $follower){
+            $respone[] = $follower->jsonSerialize();
+        }
+        return $respone;
+    }
+
+    /**
+     * @param mixed $followers
+     */
+    public function setFollowers($followers)
+    {
+        $this->followers = $followers;
+    }
+
+    public function addFollower(User $follower){
+        $this->followers[]=$follower;
+        $follower->addFollowed($this);
+        return $this;
+    }
+
+    public function removeFollower(User $follower){
+        $this->followers->removeElement($follower);
     }
 
     /**
