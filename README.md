@@ -47,6 +47,13 @@ Guests are user that have been invited to roadtrip
   * Get picture
   * Delete picture
 
+* Roadtrip followers <-> User followed roadtrips
+Guests are user that have been invited to roadtrip  
+  * Add follower to roadtrip
+  * Get followed roadtrips
+  * Get roadtrip followers
+  * Remove roadtrip follower
+
 #User
 
 ### Create user
@@ -340,7 +347,7 @@ You can give the max distance you want for search (in km), by defaul, the distan
 
 HTTP Request  
 Method: Get  
-Url: {api-base-path}/guest/{guestId}/roadtrips  
+Url: {api-base-path}/guest/{userId}/roadtrips  
 
 Return Json array which contains a list of roadtrips  
 
@@ -356,14 +363,14 @@ Return json array which contains the guests list
 
 HTTP Request  
 Method: PUT  
-Url: {api-base-path}/guest/{guestId}/roadTrip/{roadtripId}  
+Url: {api-base-path}/guest/{userId}/roadTrip/{roadtripId}  
 	
 
 ###Remove guest from roadtrip
 
 HTTP Request  
 Method: DELETE  
-url: {api-base-path}/guest/{guestId}/roadtrip/{roadtripId}  
+url: {api-base-path}/guest/{userId}/roadtrip/{roadtripId}  
 
 
 #Picture
@@ -400,7 +407,7 @@ Returns json array which contain list of pictures entities
 ### Get picture
 HTTP Request  
 Method Get  
-Url: {api-base-path}/picture/{picture}  
+Url: {api-base-path}/picture/{pictureId}  
 
 the reques will return a picture
 
@@ -409,3 +416,45 @@ HTTP Request
 Method Delete  
 url: {api-base-path}/picture/{picture}  
 
+
+#Roadtrip followers <-> User followed roadtrips
+
+###Add follower to roadtrip
+
+HTTP Request  
+Method: put  
+Url: {api-base-path}/follower/{userId}/roadtrip/{roadtripId}  
+
+return json:
+```json
+{  
+	"success":"Follower have been added"  
+}  
+```
+###Get followed roadtrips
+
+HTTP Request  
+Method: Get  
+Url: {api-base-path}/follower/{userId}/roadtrips  
+
+Return json array which contains the list of followed roadtrips
+
+###Get roadtrip followers
+
+HTTP Request  
+Method: PUT  
+Url: {api-base-path}/roadtrip/{roadtripId}/followers  
+	
+return json array which contains the list of roadtrip followers (list of Users)
+
+###Remove roadtrip follower
+
+HTTP Request  
+Method: DELETE  
+url: {api-base-path}/follower/{userId}/roadtrip/{roadtripId}  
+
+```json
+{  
+	"success":"Follower have been removed"  
+}  
+```
