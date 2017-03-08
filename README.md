@@ -442,7 +442,7 @@ Return json array which contains the list of followed roadtrips
 ###Get roadtrip followers
 
 HTTP Request  
-Method: PUT  
+Method: Get  
 Url: {api-base-path}/roadtrip/{roadtripId}/followers  
 	
 return json array which contains the list of roadtrip followers (list of Users)
