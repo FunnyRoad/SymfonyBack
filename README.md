@@ -337,7 +337,7 @@ URL: {api-base-path}/roadtrip/{roadtripId}/place/{placeId}
 ### Find nearest roadtrips
 HTTP Request
 Method: GET
-url: {api-base-path}/roadtrip/nearest/{latitude}/{longitude}/{distance}
+url: {api-base-path}/roadtrip/user/{userId}/nearest/{latitude}/{longitude}/{distance}
 
 You can give the max distance you want for search (in km), by defaul, the distance is 50km
 
