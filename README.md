@@ -228,7 +228,7 @@ Method: POST
 Url: {api-base-path}/roadtrip
 ```json
 {  
-	"name":"Ma place", //Obligatory field  
+	"name":"Mon roadtrip", //Obligatory field  
 	"owner":, //Obligatory field, User id of the roadtrip owner   
 	"departure":{  
 		"googleId":"", //not obligatory
@@ -247,13 +247,13 @@ Url: {api-base-path}/roadtrip
 ```json
 {  
 	"id":, // Roadtrip id   
-	"name":"Ma place" // Roadtrip name  
+	"name":"Roadtrip name", // Roadtrip name  
 	"departure":{  
 		"googleId":"",
 		"latitude":82,           
    		"longitude":64  
 	},  	
-	"arrival":"",  	
+	"arrival":"" 	
 }  
 ```
 If you send json without list of places, only roadtrip name will be updated
@@ -261,7 +261,7 @@ or
 ```json
 {  
 	"id":,  
-	"name":"Ma place", // Roadtrip name  
+	"name":"Roadtrip Name", // Roadtrip name  
 	"departure":{  
 		"googleId":"", //not obligatory
 		"latitude":82,           
@@ -284,7 +284,7 @@ return json content
 ```json
 {  
 	"id":,
-	"name":"Ma place", // Roadtrip name  
+	"name":"Roadtrip name", // Roadtrip name  
 	"places":[1,2...], //list of places id of a roadtrip  
 	"departure":{  
 		"googleId":"", //not obligatory
