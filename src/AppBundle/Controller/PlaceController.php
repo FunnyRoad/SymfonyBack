@@ -26,7 +26,7 @@ class PlaceController extends Controller{
 
         $em = $this->getDoctrine()->getManager();
         $place = $em->getRepository('AppBundle:Place')->find($id);
-        $em->flush();
+
         return $this->json($place->jsonSerialize());
 
     }
@@ -155,7 +155,7 @@ class PlaceController extends Controller{
      * @Route("/place/nearest/{latitude}/{longitude}/{distance}",name="nearest_place")
      * @Method("GET")
      */
-    public function getNearestsRoadtrips($latitude,$longitude,$distance = 50){
+    public function getNearestPlaces($latitude,$longitude,$distance = 50){
 
         $distance = $distance*1000;
         $em = $this->getDoctrine()->getManager();
