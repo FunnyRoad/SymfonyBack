@@ -20,6 +20,13 @@ class Place implements \JsonSerializable {
      * @ORM\Column(type="string", length=40,nullable=false)
      */
     private $name;
+
+    /**
+     * @ORM\Column(type="string", nullable= true)
+     */
+    private $googleId;
+
+
     /**
      * @ORM\Column(type="float",nullable=false)
      */
@@ -41,12 +48,29 @@ class Place implements \JsonSerializable {
      */
     private $type;
 
-
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Picture",mappedBy="place")
      * @ORM\JoinColumn(nullable=true)
      */
     private $pictures;
+
+    /**
+     * @return mixed
+     */
+    public function getGoogleId()
+    {
+        return $this->googleId;
+    }
+
+    /**
+     * @param mixed $googleId
+     */
+    public function setGoogleId($googleId)
+    {
+        $this->googleId = $googleId;
+    }
+
+
 
     public function __construct()
     {

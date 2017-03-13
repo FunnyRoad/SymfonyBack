@@ -92,6 +92,9 @@ class PlaceController extends Controller{
         if(isset($params["type"]))
             $place->setType($params["type"]);
 
+        if(isset($params["googleId"]))
+            $place->setType($params["googleId"]);
+
         $em = $this->getDoctrine()->getManager();
         $em->persist($place);
         $em->flush();
@@ -141,6 +144,8 @@ class PlaceController extends Controller{
             $place->setDescription($params["description"]);
         if(isset($params["grade"]))
             $place->setgrade($params["grade"]);
+        if(isset($params["googleId"]))
+            $place->setGoogleId($params["googleId"]);
 
 
         $em = $this->getDoctrine()->getManager();
@@ -164,5 +169,26 @@ class PlaceController extends Controller{
         );
     }
 
+    /**
+     * @Route("/place/name/{name}",name="find_place_by_name")
+     * @Method("Get")
+     */
+    public function getPlaceByName($name){
+        $em = $this->getDoctrine()->getManager();
+        return $this->json(
+            $em->getRepository('AppBundle:Place')->findByName($name)
+        );
+    }
+
+    /**
+     * @Route("/place/googleId/{googleId}",name="find_place_by_googleId")
+     * @Method("Get")
+     */
+    public function getPlaceByGoogleId($googleId){
+        $em = $this->getDoctrine()->getManager();
+        return $this->json(
+            $em->getRepository('AppBundle:Place')->findByGoogleId($googleId)
+        );
+    }
 
 }
