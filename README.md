@@ -60,6 +60,7 @@ Guests are user that have been invited to roadtrip
   * Remove roadtrip follower
 
 * Post
+  * Get roadtrip posts
   * Find post
   * Find all posts
   * Create and add post to roadtrip
@@ -67,6 +68,13 @@ Guests are user that have been invited to roadtrip
   * Delete post 
 
 #User
+
+### Get roadtrip posts
+HTTP Request
+Method: Get
+Url: {api-base-path}/roadtrip/{roadtrip}/posts
+
+return lis of posts
 
 ### Create user
 
@@ -524,13 +532,50 @@ HTTP Request
 Method: Get
 Url: {api-base-path}/post/{id}
 
+return json object like below
+```json
+{  
+    "id":1,  
+    "text":"hey ",  
+    "roadtripId":1,  
+    "picturesId":[7,8]  
+}  
+```
 
 ### Find all posts
 HTTP Request
 Method: Get
 Url: {api-base-path}/posts
 
-
+returns json array of posts
 ### Create and add post to roadtrip
+HTTP Request
+Method: Post
+Url; {api-base-path}/post/{postId}
+
+```json
+{  
+	"text":"hey aujourd'hui il fait vraiment beau", //Obligatory  
+	"roadtripId": //Obligatory  
+}
+```
+
 ### Update post
+HTTP Request
+Method: Put
+Url; {api-base-path}/post/{postId}
+
+```json
+{  
+	"text":"hey aujourd'hui il fait vraiment beau", //Obligatory  
+	"roadtripId": //Obligatory  
+}
+```
+
+
+
 ### Delete post
+HTTP Request
+Method: Delete
+Url; {api-base-path}/post/{postId}
+
