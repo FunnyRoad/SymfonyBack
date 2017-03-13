@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 
 
 use AppBundle\Entity\Departure;
+use AppBundle\Entity\Post;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -184,11 +185,13 @@ class RoadTripController extends Controller
         $roadTrip->setArrival($params["arrival"]);
 
         $departureData = $params["departure"];
+
         $departure = new Departure();
         $departure->setLatitude($departureData["latitude"]);
         $departure->setLongitude($departureData["longitude"]);
         if(isset($departureData["googleId"]))
             $departure->setGoogleId($departureData["googleId"]);
+        $roadTrip->setDeparture($departure);
 
         if(isset($params["places"])){
             $roadTrip->removeAllPlaces();
@@ -222,16 +225,50 @@ class RoadTripController extends Controller
     }
 
     /**
-     * @Route("/roadtrip/nearest/{latitude}/{longitude}/{distance}",name="nearest_roadtrips")
+     * @Route("/roadtrip/user/{userId}/nearest/{latitude}/{longitude}/{distance}",name="nearest_roadtrips")
      * @Method("GET")
      */
-    public function getNearestsRoadtrips($latitude,$longitude,$distance = 50){
+    public function getNearestsRoadtrips($userId,$latitude,$longitude,$distance = 50){
 
         $distance = $distance*1000;
         $em = $this->getDoctrine()->getManager();
+        $nearestRoadtrips = $em->getRepository('AppBundle:RoadTrip')->findByNearestRoadtripsDeparture($latitude,$longitude,$distance);
+        $recommandedRoadtrips = array();
+
+        foreach ($nearestRoadtrips as $nearestRoadtrip){
+            if(!$this->isAFollowedRoadtrip($nearestRoadtrip,$userId))
+                $recommandedRoadtrips[]=$nearestRoadtrip;
+        }
+
         return $this->json(
-            $em->getRepository('AppBundle:RoadTrip')->findByNearestRoadtripsDeparture($latitude,$longitude,$distance)
+            $recommandedRoadtrips
         );
     }
 
+
+    /*
+     * FIXME
+     * Solution temporaire pour vérifier qu'uon ne recommande pas un roadtrip déjà suivi
+     */
+    private function isAFollowedRoadtrip(RoadTrip $roadTrip,$userId){
+        foreach ($roadTrip->getFollowers() as $follower){
+            if($follower->getId() == $userId){
+                echo "Je renvoie vrai $userId ".$follower->getId();
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+   /**
+     * @Route("/roadtrip/{roadtrip}/posts",name="get_roadtrip_posts")
+     * @Method("get")
+     */
+    public function getRoadtripPosts(RoadTrip $roadtrip){
+        $em = $this->getDoctrine()->getManager();
+        return $this->json(
+            $em->getRepository('AppBundle:Post')->findByRoadtrip($roadtrip)
+        );
+    }
 }

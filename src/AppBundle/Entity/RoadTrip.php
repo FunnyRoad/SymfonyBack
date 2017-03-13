@@ -72,7 +72,7 @@ class RoadTrip implements \JsonSerializable {
     {
         $respone = array();
         foreach ($this->followers as $follower){
-            $respone[] = $follower->jsonSerialize();
+            $respone[] = $follower;
         }
         return $respone;
     }
@@ -93,6 +93,7 @@ class RoadTrip implements \JsonSerializable {
 
     public function removeFollower(User $follower){
         $this->followers->removeElement($follower);
+        $follower->removeFollowed($this);
     }
 
     /**
