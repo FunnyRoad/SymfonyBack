@@ -49,10 +49,33 @@ class Place implements \JsonSerializable {
     private $type;
 
     /**
+     * @ORM\Column(type="float",nullable=true)
+     */
+    private $numberOfVoters;
+
+    /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Picture",mappedBy="place")
      * @ORM\JoinColumn(nullable=true)
      */
     private $pictures;
+
+    /**
+     * @return mixed
+     */
+    public function getNumberOfVoters()
+    {
+        return $this->numberOfVoters;
+    }
+
+    /**
+     * @param mixed $numberOfVoters
+     */
+    public function setNumberOfVoters($numberOfVoters)
+    {
+        $this->numberOfVoters = $numberOfVoters;
+    }
+
+
 
     /**
      * @return mixed
@@ -243,7 +266,8 @@ class Place implements \JsonSerializable {
             "description"=>$this->description,
             "grade"=>$this->grade,
             "latitude"=>$this->latitude,
-            "longitude"=>$this->longitude
+            "longitude"=>$this->longitude,
+            "numberVoters"=>$this->numberOfVoters
         ];
     }
 }

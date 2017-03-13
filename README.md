@@ -24,6 +24,7 @@ api-base-path:
   * Find nearest Places
   * Find place by name
   * Find place by google id
+  * Add rate to place
   
 * Entity RoadTrip 
   * Create roadtrip
@@ -251,12 +252,18 @@ Return json object of place
 ### Find place by googleId
 HTTP Request  
 Method: Get  
-Url: {api-base-path}/place/googleId/{googleId}
+Url: {api-base-path}/place/googleId/{googleId}  
 
-Return json object of place
+Return json object of place  
+
+### 
 
 #RoadTrip
+HTTP Request  
+Method: Post  
+Url: /place/{placeId}/rate/{rate}  
 
+returns place withe the updated rate  
 
 ### Create Roadtrip
 HTTP Request  

@@ -95,6 +95,9 @@ class PlaceController extends Controller{
         if(isset($params["googleId"]))
             $place->setType($params["googleId"]);
 
+        $place->setNumberOfVoters(0);
+        $place->setGrade(0);
+
         $em = $this->getDoctrine()->getManager();
         $em->persist($place);
         $em->flush();
@@ -146,6 +149,8 @@ class PlaceController extends Controller{
             $place->setgrade($params["grade"]);
         if(isset($params["googleId"]))
             $place->setGoogleId($params["googleId"]);
+        $place->setNumberOfVoters(0);
+        $place->setGrade(0);
 
 
         $em = $this->getDoctrine()->getManager();
@@ -188,6 +193,23 @@ class PlaceController extends Controller{
         $em = $this->getDoctrine()->getManager();
         return $this->json(
             $em->getRepository('AppBundle:Place')->findByGoogleId($googleId)
+        );
+    }
+
+    /**
+     * @Route("/place/{place}/rate/{rate}",name="place_ratng")
+     * @Method("Post")
+     */
+    public function ratePlace(Place $place,$rate){
+        $em = $this->getDoctrine()->getManager();
+        $number =$place->getNumberOfVoters();
+        $place->setGrade(($place->getGrade()*$number+$rate)/($number+1));
+        $number++;
+        $place->setNumberOfVoters($number);
+
+        $em->flush();
+        return $this->json(
+            $place
         );
     }
 
