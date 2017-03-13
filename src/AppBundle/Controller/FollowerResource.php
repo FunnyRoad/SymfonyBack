@@ -24,6 +24,8 @@ class FollowerResource extends Controller
         $follower = $em->getRepository('AppBundle:User')->find($userId);
         $roadtrip = $em->getRepository('AppBundle:RoadTrip')->find($roadtripId);
         $roadtrip->addFollower($follower);
+        $em->persist($roadtrip);
+        $em->persist($follower);
         $em->flush();
 
         $success['success'] = "Follower have been added";
@@ -39,7 +41,7 @@ class FollowerResource extends Controller
         $em = $this->getDoctrine()->getManager();
         $follower = $em->getRepository('AppBundle:User')->find($userId);
 
-        return $this->json($follower->getRoadtrips());
+        return $this->json($follower->getFollowed());
     }
 
     /**
@@ -50,6 +52,7 @@ class FollowerResource extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $roadtrip = $em->getRepository('AppBundle:RoadTrip')->find($roadtripId);
+
         return $this->json($roadtrip->getFollowers());
     }
 
@@ -62,6 +65,7 @@ class FollowerResource extends Controller
         $em = $this->getDoctrine()->getManager();
         $follower = $em->getRepository('AppBundle:User')->find($userId);
         $roadtrip = $em->getRepository('AppBundle:RoadTrip')->find($roadtripId);
+        $follower->removeFollowed($roadtrip);
         $roadtrip->removeFollower($follower);
         $em->flush();
 
