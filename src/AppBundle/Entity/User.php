@@ -83,7 +83,11 @@ class User implements \JsonSerializable
      */
     public function getFollowed()
     {
-        return $this->followed;
+        $followed = array();
+        foreach($this->followed as $roadtrip){
+            $followed[]=$roadtrip;
+        }
+        return $followed;
     }
 
     /**
