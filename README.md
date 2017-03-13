@@ -22,6 +22,8 @@ api-base-path:
   * Find list places by ids
   * Delete place
   * Find nearest Places
+  * Find place by name
+  * Find place by google id
   
 * Entity RoadTrip 
   * Create roadtrip
@@ -45,14 +47,24 @@ Guests are user that have been invited to roadtrip
   * Add picture to place
   * Get pictures Ids of place
   * Get picture
+  * Add picture to post
+  * Get pictures id of post
+  * Get picture of post 
   * Delete picture
 
+
 * Roadtrip followers <-> User followed roadtrips
-Guests are user that have been invited to roadtrip  
   * Add follower to roadtrip
   * Get followed roadtrips
   * Get roadtrip followers
   * Remove roadtrip follower
+
+* Post
+  * Find post
+  * Find all posts
+  * Create and add post to roadtrip
+  * Update post
+  * Delete post 
 
 #User
 
@@ -149,7 +161,8 @@ Url: {api-base-path}/place
 	"longitude":,// Obligatory field  
 	"description":"",   
 	"grade":9,   
-	"type":""  
+	"type":"",  
+	"googleId":""  	
 }  
 ```
 ### Update place
@@ -164,7 +177,8 @@ Url: {api-base-path}/place
 	"grade":,  
  	"latitude":,  
 	"longitude":,  
-	"type":"",     
+	"type":"",  
+	"googleId":""  
 }  
 ```
 ### Find one place
@@ -183,7 +197,8 @@ Return json content
 	"grade":,  
  	"latitude":,  
 	"longitude":,  
-	"type":""  
+	"type":"",  
+	"googleId":""    
 }  
 ```
 
@@ -218,6 +233,19 @@ url: {api-base-path}/place/nearest/{latitude}/{longitude}/{distance}
 
 You can give the max distance you want for search (in km), by defaul, the distance is 50km
 
+### Find place by name
+HTTP Request  
+Method: Get  
+Url: {api-base-path}/place/name/{name}
+
+Return json object of place
+
+### Find place by googleId
+HTTP Request  
+Method: Get  
+Url: {api-base-path}/place/googleId/{googleId}
+
+Return json object of place
 
 #RoadTrip
 
@@ -411,6 +439,36 @@ Url: {api-base-path}/picture/{pictureId}
 
 the reques will return a picture
 
+
+###Add picture to post
+HTTP Request  
+Method: Post  
+Url: {api-base-path}/post/{postId}/picture  
+
+the body content must be a picture with a key "picture"   
+
+###Get pictures id of post
+HTTP Request
+Method: Get
+Url: {api-base-path}/post/{post}/pictures
+
+Returns json array which contain list of pictures entities  
+```json  
+[{  
+	"id":,  
+	"type":""  
+}]  
+```
+
+
+###Get picture of post 
+HTTP Request  
+Method: Get  
+Url: {api-base-path}/post/picture/{pictureId}
+
+Return a picture (an image: jpg, png ...)
+ 
+
 ### Delete picture
 HTTP Request  
 Method Delete  
@@ -458,3 +516,21 @@ url: {api-base-path}/follower/{userId}/roadtrip/{roadtripId}
 	"success":"Follower have been removed"  
 }  
 ```
+
+
+# Post
+### Find post
+HTTP Request
+Method: Get
+Url: {api-base-path}/post/{id}
+
+
+### Find all posts
+HTTP Request
+Method: Get
+Url: {api-base-path}/posts
+
+
+### Create and add post to roadtrip
+### Update post
+### Delete post
