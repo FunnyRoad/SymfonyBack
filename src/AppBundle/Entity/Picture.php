@@ -34,6 +34,29 @@ class Picture implements \JsonSerializable
     private $place;
 
     /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Post",inversedBy="pictures")
+     */
+    private $post;
+
+    /**
+     * @return mixed
+     */
+    public function getPost()
+    {
+        return $this->post;
+    }
+
+    /**
+     * @param mixed $post
+     */
+    public function setPost($post)
+    {
+        $this->post = $post;
+    }
+
+
+
+    /**
      * @return mixed
      */
     public function getPlace()

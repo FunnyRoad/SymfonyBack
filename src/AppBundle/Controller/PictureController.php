@@ -11,6 +11,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Picture;
 use AppBundle\Entity\Place;
+use AppBundle\Entity\Post;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -51,7 +52,7 @@ class PictureController extends Controller
         $fileName = $picture->getId().'.'.$picture->getType();
 
         $file->move(
-            $this->getParameter('pictures_directory'),
+            $this->getParameter('place_pictures_directory'),
             $fileName
         );
 
@@ -79,11 +80,71 @@ class PictureController extends Controller
      */
     public function getPicture(Picture $picture){
 
-        $file = new SplFileInfo( $this->getParameter('pictures_directory').'/'.$picture->getId().".".$picture->getType());
+        $file = new SplFileInfo( $this->getParameter('place_pictures_directory').'/'.$picture->getId().".".$picture->getType());
         $response = new BinaryFileResponse($file);
         $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
         return $response;
     }
+
+
+    /**
+     * @Route("/post/{postId}/picture",name="add_picture_to_post")
+     * @Method("POST")
+     */
+    public function addPictureToPost(Request $request,$postId){
+        $em = $this->getDoctrine()->getManager();
+        $post = $em->getRepository('AppBundle:Post')->find($postId);
+
+        $test = $request->files;
+
+        $file = $test->get("picture");
+
+        $picture = new Picture();
+        $picture->setType($file->guessExtension());
+        $em->persist($picture);
+        $em->flush();
+
+        $post->addPicture($picture);
+
+
+        $fileName = $picture->getId().'.'.$picture->getType();
+
+        $file->move(
+            $this->getParameter('roadtrip_pictures_directory'),
+            $fileName
+        );
+
+        $em->flush();
+
+
+        return $this->json($picture);
+    }
+
+    /**
+     * @Route("/post/{post}/pictures",name="list_of_pictures_id_of_post")
+     * @Method("Get")
+     */
+    public function getPicturesOfPost(Post $post){
+
+        $em = $this->getDoctrine()->getManager();
+        $pictures = $em->getRepository('AppBundle:Picture')
+            ->findByPost($post);
+        return $this->json($pictures);
+
+    }
+
+    /**
+     * @Route("/post/picture/{picture}",name="get_picture_of_post")
+     * @Method("GET")
+     */
+    public function getPictureOfPost(Picture $picture){
+
+        $file = new SplFileInfo( $this->getParameter('roadtrip_pictures_directory').'/'.$picture->getId().".".$picture->getType());
+        $response = new BinaryFileResponse($file);
+        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
+        return $response;
+    }
+
 
 
     /**
@@ -92,13 +153,16 @@ class PictureController extends Controller
      */
     public function deletePicture(Picture $picture){
         $em = $this->getDoctrine()->getManager();
-        $place = $picture->getPlace();
 
-        $picture->getPlace()->removePicture($picture);
+        if($picture->getPlace() != null)
+            $picture->getPlace()->removePicture($picture);
+        if($picture->getPost() != null)
+            $picture->getPost()->removePicture($picture);
         $em->remove($picture);
         $em->flush();
 
         $success['success'] = "Picture heve been removed";
         return $this->json($success);
     }
+
 }
