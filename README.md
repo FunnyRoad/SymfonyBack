@@ -68,7 +68,7 @@ Guests are user that have been invited to roadtrip
   * Update post
   * Delete post 
 
-#User
+# User
 
 ### Get roadtrip posts
 HTTP Request
