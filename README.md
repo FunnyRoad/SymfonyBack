@@ -1,12 +1,18 @@
 #API Documentation 
 The following API will permise you to manage roadsTrips using FunnyRoad application.
 
-##API Links
+# Install project (for developpers)
+You need to install mysq, clone the project and execute the command: composer install  
+You will have to provide database informations since the execution of composer install  
+Finally, create databae named funnyroad and all is ok.
+execute "bin/console server:run" and your api will be ready to use.
+
+## API Links
 api-base-path:  
 * dev : localhost:8000  
 * preprod : vps376653.ovh.net:8080    
 
-##Api summary:
+## Api summary:
 
 * Entity User  
   * Create user
